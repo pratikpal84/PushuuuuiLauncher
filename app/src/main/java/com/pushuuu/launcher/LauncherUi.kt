@@ -253,7 +253,7 @@ fun LauncherScreen(apps: List<AppItem>, prefs: Prefs, onScreenshot: () -> Unit) 
                     modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(
                         top = 18.dp,
-                        bottom = if (query.isEmpty()) 140.dp else 24.dp
+                        bottom = 16.dp
                     ),
                     verticalArrangement = Arrangement.spacedBy(18.dp),
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -266,45 +266,43 @@ fun LauncherScreen(apps: List<AppItem>, prefs: Prefs, onScreenshot: () -> Unit) 
                         )
                     }
                 }
-            }
-
-            // Glass dock
-            if (query.isEmpty()) {
-                val dockShape = RoundedCornerShape(30.dp)
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .navigationBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 12.dp)
-                        .fillMaxWidth()
-                        .clip(dockShape)
-                        .background(GlassStrong)
-                        .border(1.dp, GlassBorder, dockShape)
-                        .padding(14.dp),
-                    horizontalArrangement = if (pinnedApps.isEmpty()) Arrangement.Center else Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (pinnedApps.isEmpty()) {
-                        Text(
-                            text = "Long-press an app to pin it here",
-                            color = Color.White.copy(alpha = 0.55f),
-                            fontSize = 13.sp,
-                            modifier = Modifier.padding(vertical = 18.dp)
-                        )
-                    } else {
-                        pinnedApps.forEach { app ->
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(16.dp))
-                                    .combinedClickable(
-                                        onClick = { launchApp(context, app) },
-                                        onLongClick = {
-                                            togglePin(app.packageName)
-                                            Toast.makeText(context, "Unpinned ${app.name}", Toast.LENGTH_SHORT).show()
-                                        }
-                                    )
-                            ) {
-                                AppIcon(app.packageName, 56.dp)
+                // Dock: its own solid bar below the grid (nothing scrolls behind it)
+                if (query.isEmpty()) {
+                    val dockShape = RoundedCornerShape(30.dp)
+                    Row(
+                        modifier = Modifier
+                            .navigationBarsPadding()
+                            .padding(vertical = 12.dp)
+                            .fillMaxWidth()
+                            .clip(dockShape)
+                            .background(Color(0xF2151517))
+                            .border(1.dp, GlassBorder, dockShape)
+                            .padding(14.dp),
+                        horizontalArrangement = if (pinnedApps.isEmpty()) Arrangement.Center else Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (pinnedApps.isEmpty()) {
+                            Text(
+                                text = "Long-press an app to pin it here",
+                                color = Color.White.copy(alpha = 0.55f),
+                                fontSize = 13.sp,
+                                modifier = Modifier.padding(vertical = 18.dp)
+                            )
+                        } else {
+                            pinnedApps.forEach { app ->
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .combinedClickable(
+                                            onClick = { launchApp(context, app) },
+                                            onLongClick = {
+                                                togglePin(app.packageName)
+                                                Toast.makeText(context, "Unpinned ${app.name}", Toast.LENGTH_SHORT).show()
+                                            }
+                                        )
+                                ) {
+                                    AppIcon(app.packageName, 56.dp)
+                                }
                             }
                         }
                     }
