@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Pushuuu Launcher</string>
+    <string name="screenshot_service_label">Pushuuu Screenshot</string>
+    <string name="accessibility_description">Lets Pushuuu Launcher take a screenshot when you double-tap the clock on the home screen. It does not read or store anything on your screen.</string>
+</resources>
